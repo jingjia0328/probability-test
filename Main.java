@@ -19,7 +19,6 @@ public class Main
 		
 		int Royal_StraightFlush=0;int Straight_Flush=0;int Four_kind=0;int Full_house=0;int Flush=0;
 		int Straight=0;int Three_kind=0;int Two_pair=0;int Pair=0;int High_card=0;
-        
         int times = 0;
         System.out.println("請問要執行幾次");
         int n = sc.nextInt();
@@ -62,7 +61,7 @@ public class Main
 	        	flag = true;
 	        	Royal_StraightFlush++;
 	        }
-	        else if(Comman_str(list)==true&&flag==false) {
+	        else if(Common_str(list)==true&&flag==false) {
 	        	System.out.println(" 同花順!");
 	        	flag = true;
 	        	Straight_Flush++;
@@ -178,295 +177,48 @@ public class Main
 	   
 	}
 
-	static boolean Comman_str(String list) {
+	static boolean Common_str(String list) {
 	    String[] arr = list.split(" ");
-		ArrayList<Integer> A = new ArrayList<Integer>();
-		ArrayList<Integer> B = new ArrayList<Integer>();
-		ArrayList<Integer> C = new ArrayList<Integer>();
-		ArrayList<Integer> D = new ArrayList<Integer>();
+	    int count[][] = new int[13][4];
+	    for(int i=0;i<13;i++)
+	    	for(int j=0;j<4;j++)
+	    		count[i][j]=0;
+	    
 	    for(int i=0;i<7;i++) {
 	    	int num = Integer.valueOf(arr[i].split("-")[0]);
-	    	if(arr[i].contains("A"))
-	    		A.add(num);
-	    	else if(arr[i].contains("B"))
-	    		B.add(num);
-	    	else if(arr[i].contains("C"))
-	    		C.add(num);
+	    	int type=0;
+	    	if(arr[i].split("-")[1].indexOf('A')!=-1)
+	    		type=0;
+	    	else if(arr[i].split("-")[1].indexOf('B')!=-1)
+	    		type=1;
+	    	else if(arr[i].split("-")[1].indexOf('C')!=-1)
+	    		type=2;
 	    	else
-	    		D.add(num);	
+	    		type=3;
+	    	count[num-1][type] = 1;
 	    }
 	    
-	    if(A.size()>=5) {
-	    	if(A.size()==5) {
-	    		if(A.get(0)==1&&A.get(1)==10&&A.get(2)==11&&A.get(3)==12&&A.get(4)==13)
-	    			return true;
-	    		for(int i=1;i<5;i++) {
-	    			if(A.get(i-1)-A.get(i)!=1)
-	    				return false;
-	    		}
+	    for(int i=0;i<4;i++) {
+	    	if(count[0][i]==1&&count[9][i]==1&&count[10][i]==1&&count[11][i]==1&&count[12][i]==1) {
 	    		return true;
-	    	}else if(A.size()==6) {
-	    		if(A.get(0)==1&&A.get(5)==13) {
-	    			int count = 0;
-	    			for(int i=1;i<5;i++) {
-	    				if(A.get(i)==10||A.get(i)==11||A.get(i)==12)
-	    					count++;
+	    	}
+	    	else {
+	    		for(int j=0;j<9;j++) {
+	    			for(int k=j;k<j+4;k++) {
+	    				//System.out.print(count[k][i]+" "+count[k][i]+" ");
+	    				if(count[k][i]==0||count[k+1][i]==0) { 
+	    					break;
+	    				}
+	    				else if(k==j+3)
+	    					return true;
 	    			}
-	    			if(count==3)
-	    				return true;
+	    			//System.out.println("");
 	    		}
-	    		else {
-		    		for(int i=1;i<6;i++) {
-		    			if(A.get(i-1)-A.get(i)!=1)
-		    				break;
-		    			else if(i==5) 
-		    				return true;
-		    		}
-		    		for(int i=2;i<7;i++) {
-		    			if(A.get(i-1)-A.get(i)!=1)
-		    				break;
-		    			else if(i==6) 
-		    				return true;
-		    		}
-		    		return false;
-	    		}
-	    	}else{
-	    		if(A.get(0)==1&&A.get(6)==13) {
-	    			int count = 0;
-	    			for(int i=1;i<6;i++) {
-	    				if(A.get(i)==10||A.get(i)==11||A.get(i)==12)
-	    					count++;
-	    			}
-	    			if(count==3)
-	    				return true;
-	    		}
-	    		else {
-		    		for(int i=1;i<6;i++) {
-		    			if(A.get(i-1)-A.get(i)!=1)
-		    				break;
-		    			else if(i==6) 
-		    				return true;
-		    		}
-		    		for(int i=1;i<6;i++) {
-		    			if(A.get(i-1)-A.get(i)!=1)
-		    				break;
-		    			else if(i==6) 
-		    				return true;
-		    		}
-		    		for(int i=1;i<6;i++) {
-		    			if(A.get(i-1)-A.get(i)!=1)
-		    				break;
-		    			else if(i==6) 
-		    				return true;
-		    		}
-		    		return false;
-	    		}
+	    		
 	    	}
 	    }
-	    else if(B.size()>=5) {
-	    	if(B.size()==5) {
-	    		if(B.get(0)==1&&B.get(1)==10&&B.get(2)==11&&B.get(3)==12&&B.get(4)==13)
-	    			return true;
-	    		for(int i=1;i<5;i++) {
-	    			if(B.get(i-1)-B.get(i)!=1)
-	    				return false;
-	    		}
-	    		return true;
-	    	}else if(B.size()==6) {
-	    		if(B.get(0)==1&&B.get(5)==13) {
-	    			int count = 0;
-	    			for(int i=1;i<5;i++) {
-	    				if(B.get(i)==10||B.get(i)==11||B.get(i)==12)
-	    					count++;
-	    			}
-	    			if(count==3)
-	    				return true;
-	    		}
-	    		else {
-		    		for(int i=1;i<6;i++) {
-		    			if(B.get(i-1)-B.get(i)!=1)
-		    				break;
-		    			else if(i==5) 
-		    				return true;
-		    		}
-		    		for(int i=2;i<7;i++) {
-		    			if(B.get(i-1)-B.get(i)!=1)
-		    				break;
-		    			else if(i==6) 
-		    				return true;
-		    		}
-		    		return false;
-	    		}
-	    	}else{
-	    		if(B.get(0)==1&&B.get(6)==13) {
-	    			int count = 0;
-	    			for(int i=1;i<6;i++) {
-	    				if(B.get(i)==10||B.get(i)==11||B.get(i)==12)
-	    					count++;
-	    			}
-	    			if(count==3)
-	    				return true;
-	    		}
-	    		else {
-		    		for(int i=1;i<6;i++) {
-		    			if(B.get(i-1)-B.get(i)!=1)
-		    				break;
-		    			else if(i==6) 
-		    				return true;
-		    		}
-		    		for(int i=1;i<6;i++) {
-		    			if(B.get(i-1)-B.get(i)!=1)
-		    				break;
-		    			else if(i==6) 
-		    				return true;
-		    		}
-		    		for(int i=1;i<6;i++) {
-		    			if(B.get(i-1)-B.get(i)!=1)
-		    				break;
-		    			else if(i==6) 
-		    				return true;
-		    		}
-		    		return false;
-	    		}
-	    	}
-	    }
-	    else if(C.size()>=5) {
-	    	if(C.size()==5) {
-	    		if(C.get(0)==1&&C.get(1)==10&&C.get(2)==11&&C.get(3)==12&&C.get(4)==13)
-	    			return true;
-	    		for(int i=1;i<5;i++) {
-	    			if(C.get(i-1)-C.get(i)!=1)
-	    				return false;
-	    		}
-	    		return true;
-	    	}else if(C.size()==6) {
-	    		if(C.get(0)==1&&C.get(5)==13) {
-	    			int count = 0;
-	    			for(int i=1;i<5;i++) {
-	    				if(C.get(i)==10||C.get(i)==11||C.get(i)==12)
-	    					count++;
-	    			}
-	    			if(count==3)
-	    				return true;
-	    		}
-	    		else {
-		    		for(int i=1;i<6;i++) {
-		    			if(C.get(i-1)-C.get(i)!=1)
-		    				break;
-		    			else if(i==5) 
-		    				return true;
-		    		}
-		    		for(int i=2;i<7;i++) {
-		    			if(C.get(i-1)-C.get(i)!=1)
-		    				break;
-		    			else if(i==6) 
-		    				return true;
-		    		}
-		    		return false;
-	    		}
-	    	}else{
-	    		if(C.get(0)==1&&C.get(6)==13) {
-	    			int count = 0;
-	    			for(int i=1;i<6;i++) {
-	    				if(C.get(i)==10||C.get(i)==11||C.get(i)==12)
-	    					count++;
-	    			}
-	    			if(count==3)
-	    				return true;
-	    		}
-	    		else {
-		    		for(int i=1;i<6;i++) {
-		    			if(C.get(i-1)-C.get(i)!=1)
-		    				break;
-		    			else if(i==6) 
-		    				return true;
-		    		}
-		    		for(int i=1;i<6;i++) {
-		    			if(C.get(i-1)-C.get(i)!=1)
-		    				break;
-		    			else if(i==6) 
-		    				return true;
-		    		}
-		    		for(int i=1;i<6;i++) {
-		    			if(C.get(i-1)-C.get(i)!=1)
-		    				break;
-		    			else if(i==6) 
-		    				return true;
-		    		}
-		    		return false;
-	    		}
-	    	}
-	    }
-	    else if(D.size()>=5) {
-	    	if(D.size()==5) {
-	    		if(D.get(0)==1&&D.get(1)==10&&D.get(2)==11&&D.get(3)==12&&D.get(4)==13)
-	    			return true;
-	    		for(int i=1;i<5;i++) {
-	    			if(D.get(i-1)-D.get(i)!=1)
-	    				return false;
-	    		}
-	    		return true;
-	    	}else if(D.size()==6) {
-	    		if(D.get(0)==1&&D.get(5)==13) {
-	    			int count = 0;
-	    			for(int i=1;i<5;i++) {
-	    				if(D.get(i)==10||D.get(i)==11||D.get(i)==12)
-	    					count++;
-	    			}
-	    			if(count==3)
-	    				return true;
-	    		}
-	    		else {
-		    		for(int i=1;i<6;i++) {
-		    			if(D.get(i-1)-D.get(i)!=1)
-		    				break;
-		    			else if(i==5) 
-		    				return true;
-		    		}
-		    		for(int i=2;i<7;i++) {
-		    			if(D.get(i-1)-D.get(i)!=1)
-		    				break;
-		    			else if(i==6) 
-		    				return true;
-		    		}
-		    		return false;
-	    		}
-	    	}else{
-	    		if(D.get(0)==1&&D.get(6)==13) {
-	    			int count = 0;
-	    			for(int i=1;i<6;i++) {
-	    				if(D.get(i)==10||D.get(i)==11||D.get(i)==12)
-	    					count++;
-	    			}
-	    			if(count==3)
-	    				return true;
-	    		}
-	    		else {
-		    		for(int i=1;i<6;i++) {
-		    			if(D.get(i-1)-D.get(i)!=1)
-		    				break;
-		    			else if(i==6) 
-		    				return true;
-		    		}
-		    		for(int i=1;i<6;i++) {
-		    			if(D.get(i-1)-D.get(i)!=1)
-		    				break;
-		    			else if(i==6) 
-		    				return true;
-		    		}
-		    		for(int i=1;i<6;i++) {
-		    			if(D.get(i-1)-D.get(i)!=1)
-		    				break;
-		    			else if(i==6) 
-		    				return true;
-		    		}
-		    		return false;
-	    		}
-	    	}
-	    }
-	    else
-	    	return false;
-		return false;
+	    return false;
+	    
 	    
 	}
 	
